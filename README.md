@@ -26,3 +26,4 @@ diesel setup
 ```
 cargo run
 ```# diesel-mysql
+# diesel-mysql
