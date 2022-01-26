@@ -18,3 +18,12 @@ pub async fn ping(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError
         .await;
     ping
 }
+
+
+pub async fn getuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
+    let conn = pool.get().unwrap();
+    let getuser = web::block(move || diesel::sql_query("select name as data from users")
+        .get_result::<QueryResult>(&conn))
+        .await;
+    getuser
+}

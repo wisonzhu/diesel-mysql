@@ -4,6 +4,8 @@ use dotenv::dotenv;
 
 pub type DbPool = r2d2::Pool<ConnectionManager<MysqlConnection>>;
 
+
+
 pub fn establish_connection() -> Pool<ConnectionManager<MysqlConnection>>{
     dotenv().ok();
 
