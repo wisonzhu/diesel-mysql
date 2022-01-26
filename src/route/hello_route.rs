@@ -6,7 +6,7 @@ use serde::{Serialize, Deserialize};
 
 
 #[derive(Deserialize,Serialize)]
-struct UserInfo {
+pub struct UserInfo {
     username: String,
 }
 
