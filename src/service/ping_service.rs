@@ -27,3 +27,11 @@ pub async fn getuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingEr
         .await;
     getuser
 }
+
+// pub async fn insertuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
+//     let conn = pool.get().unwrap();
+//     let getuser = web::block(move || diesel::insert_into("select name as data from users")
+//         .get_result::<QueryResult>(&conn))
+//         .await;
+//     insertuser
+// }
