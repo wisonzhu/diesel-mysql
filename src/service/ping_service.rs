@@ -6,6 +6,7 @@ use diesel::result::Error;
 use crate::config::database::DbPool;
 
 #[derive(QueryableByName, PartialEq, Debug)]
+#[table_name = "users"]
 pub struct QueryResult {
     #[sql_type="Text"]
     // pub col1: i64,
@@ -14,18 +15,18 @@ pub struct QueryResult {
 
 pub async fn ping(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
     let conn = pool.get().unwrap();
-    let ping = web::block(move || diesel::sql_query("SELECT RIGHT('foobarbar', 4) as data").get_result::<QueryResult>(&conn))
+    let ping = web::block(move || diesel::sql_query("SELECT RIGHT('foobarbar', 4) as data")
+        .get_result::<QueryResult>(&conn))
         .await;
-    ping
+        return ping
 }
-
 
 pub async fn getuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
     let conn = pool.get().unwrap();
     let getuser = web::block(move || diesel::sql_query("select name as data from users")
         .get_result::<QueryResult>(&conn))
         .await;
-    getuser
+    return getuser
 }
 
 // pub async fn insertuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
