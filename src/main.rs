@@ -23,6 +23,7 @@ async fn main() -> std::io::Result<()> {
             .service(route::hello_route::get_userinfo)
             .service(route::hello_route::list_users)
             .service(route::hello_route::create_user)
+            .service(route::hello_route::delete_user)
             .service(route::hello_route::jsondemo)
     })
     .bind("127.0.0.1:8080")?

@@ -7,6 +7,8 @@ use crate::config::database::DbPool;
 use serde::Serialize;
 use crate::model::user::User;
 use crate::model::user::users::table;
+use crate::model::user::users::dsl::*;
+use diesel::prelude::*;
 
 #[derive(QueryableByName, PartialEq, Debug,Serialize)]
 #[table_name = "users"]
@@ -49,6 +51,14 @@ pub async fn create_userdata(pool: &DbPool, new_user: User) -> Result<(), diesel
         .values(&new_user)
         .execute(&conn)?;
     Ok(())
+}
+
+
+pub async fn delete_userdata(pool: &DbPool, user_id: i64) -> Result<(), diesel::result::Error> {
+    let conn = pool.get().unwrap();
+        diesel::delete(users.filter(id.eq(user_id)))
+            .execute(&conn)?;
+        Ok(())
 }
 
 

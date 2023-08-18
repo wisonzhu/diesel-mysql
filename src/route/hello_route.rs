@@ -1,6 +1,6 @@
-use actix_web::{get,post,HttpResponse, Responder, web};
+use actix_web::{get,post,delete,HttpResponse, Responder, web};
 use crate::config::database::DbPool;
-use crate::service::ping_service::{ping, getuser,listuser,create_userdata};
+use crate::service::ping_service::{ping, getuser,listuser,create_userdata,delete_userdata};
 use log::{error, info};
 use serde::{Serialize, Deserialize};
 use crate::model::user::User;
@@ -61,6 +61,15 @@ pub async fn create_user(pool: web::Data<DbPool>,new_user: web::Json<User>) ->  
     }
     
 
+#[delete("/delete_user/{user_id}")]
+pub async fn delete_user(pool: web::Data<DbPool>,web::Path(user_id): web::Path<i64>) ->  impl Responder {    
+        let result = delete_userdata(&pool, user_id).await.map_err(|_e| {
+            error!("Error in pinging database");
+            HttpResponse::InternalServerError().finish()
+        });
+        info!("Succes in pinging database");
+        HttpResponse::Ok().body(format!("Welcome {}!", "test"))
+    }
 
 
 
