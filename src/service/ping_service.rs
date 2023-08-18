@@ -30,7 +30,7 @@ pub async fn getuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingEr
     return getuser
 }
 
-pub async fn getuser1(pool: &web::Data<DbPool>) -> Result<Vec<QueryResult>, BlockingError<Error>>{
+pub async fn listuser(pool: &web::Data<DbPool>) -> Result<Vec<QueryResult>, BlockingError<Error>>{
     let conn = pool.get().unwrap();
     let getuser1 = web::block(move || diesel::sql_query("select name as data from users")
         .get_results::<QueryResult>(&conn))

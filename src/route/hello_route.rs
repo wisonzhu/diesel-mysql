@@ -1,6 +1,6 @@
 use actix_web::{get,post,HttpResponse, Responder, web};
 use crate::config::database::DbPool;
-use crate::service::ping_service::{ping, getuser,getuser1};
+use crate::service::ping_service::{ping, getuser,listuser};
 use log::{error, info};
 use serde::{Serialize, Deserialize};
 
@@ -22,8 +22,8 @@ pub async fn hello(pool: web::Data<DbPool>) -> impl Responder {
 }
 
 
-#[post("/test")]
-pub async fn helloworld(pool: web::Data<DbPool>) -> impl Responder {
+#[get("/getuser")]
+pub async fn get_userinfo(pool: web::Data<DbPool>) -> impl Responder {
     let pong = getuser(&pool).await.map_err(|_e| {
         error!("Error in pinging database");
         HttpResponse::InternalServerError().finish()
@@ -34,9 +34,9 @@ pub async fn helloworld(pool: web::Data<DbPool>) -> impl Responder {
 }
 
 
-#[post("/test1")]
-pub async fn helloworld1(pool: web::Data<DbPool>) ->  impl Responder {
-    let pong = getuser1(&pool).await.map_err(|_e| {
+#[get("/listuser")]
+pub async fn list_users(pool: web::Data<DbPool>) ->  impl Responder {
+    let pong = listuser(&pool).await.map_err(|_e| {
         error!("Error in pinging database");
         HttpResponse::InternalServerError().finish()
     });
