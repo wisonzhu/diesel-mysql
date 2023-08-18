@@ -5,6 +5,8 @@ use diesel::sql_types::Text;
 use diesel::result::Error;
 use crate::config::database::DbPool;
 use serde::Serialize;
+use crate::model::user::User;
+use crate::model::user::users::table;
 
 #[derive(QueryableByName, PartialEq, Debug,Serialize)]
 #[table_name = "users"]
@@ -40,6 +42,16 @@ pub async fn listuser(pool: &web::Data<DbPool>) -> Result<Vec<QueryResult>, Bloc
     }
     return  getuser1
 }
+
+pub async fn create_userdata(pool: &DbPool, new_user: User) -> Result<(), diesel::result::Error> {
+    let conn = pool.get().unwrap();
+    diesel::insert_into(table)
+        .values(&new_user)
+        .execute(&conn)?;
+    Ok(())
+}
+
+
 
 
 // pub async fn insertuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{

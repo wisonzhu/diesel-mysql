@@ -7,6 +7,7 @@ use env_logger::Env;
 pub mod route;
 pub mod config;
 pub mod service;
+pub mod model;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -21,6 +22,7 @@ async fn main() -> std::io::Result<()> {
             .service(route::hello_route::hello)
             .service(route::hello_route::get_userinfo)
             .service(route::hello_route::list_users)
+            .service(route::hello_route::create_user)
             .service(route::hello_route::jsondemo)
     })
     .bind("127.0.0.1:8080")?

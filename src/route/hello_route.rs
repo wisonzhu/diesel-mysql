@@ -1,8 +1,9 @@
 use actix_web::{get,post,HttpResponse, Responder, web};
 use crate::config::database::DbPool;
-use crate::service::ping_service::{ping, getuser,listuser};
+use crate::service::ping_service::{ping, getuser,listuser,create_userdata};
 use log::{error, info};
 use serde::{Serialize, Deserialize};
+use crate::model::user::User;
 
 
 #[derive(Deserialize,Serialize)]
@@ -45,6 +46,21 @@ pub async fn list_users(pool: web::Data<DbPool>) ->  impl Responder {
     HttpResponse::Ok().json(&pong.unwrap())
 
 }
+
+
+#[post("/create_user")]
+pub async fn create_user(pool: web::Data<DbPool>,new_user: web::Json<User>) ->  impl Responder {
+        let user = new_user.into_inner();
+    
+        let result = create_userdata(&pool, user).await.map_err(|_e| {
+            error!("Error in pinging database");
+            HttpResponse::InternalServerError().finish()
+        });
+        info!("Succes in pinging database");
+        HttpResponse::Ok().body(format!("Welcome {}!", "test"))
+    }
+    
+
 
 
 
