@@ -1,6 +1,6 @@
-use actix_web::{get,post,delete,HttpResponse, Responder, web};
+use actix_web::{get,post,delete,put,HttpResponse, Responder, web};
 use crate::config::database::DbPool;
-use crate::service::ping_service::{ping, getuser,listuser,create_userdata,delete_userdata};
+use crate::service::ping_service::{ping, getuser,listuser,create_userdata,delete_userdata,update_userdata};
 use log::{error, info};
 use serde::{Serialize, Deserialize};
 use crate::model::user::User;
@@ -9,6 +9,11 @@ use crate::model::user::User;
 #[derive(Deserialize,Serialize)]
 pub struct UserInfo {
     username: String,
+}
+
+#[derive(Deserialize)]
+pub struct UpdatedUserInfo {
+    pub name: String,
 }
 
 
@@ -70,6 +75,18 @@ pub async fn delete_user(pool: web::Data<DbPool>,web::Path(user_id): web::Path<i
         info!("Succes in pinging database");
         HttpResponse::Ok().body(format!("Welcome {}!", "test"))
     }
+
+
+#[put("/update_user/{user_id}")]
+pub async fn update_user(pool: web::Data<DbPool>, user_id: web::Path<i64>, updated_info: web::Json<UpdatedUserInfo>) ->  impl Responder {
+    let result= update_userdata(&pool, *user_id, &updated_info).await.map_err(|_e| {
+        error!("Error in pinging database");
+        HttpResponse::InternalServerError().finish()
+    });
+    info!("Succes in pinging database");
+    HttpResponse::Ok().body(format!("Welcome {}!", "test"))
+}
+    
 
 
 

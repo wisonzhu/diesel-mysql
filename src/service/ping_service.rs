@@ -9,6 +9,7 @@ use crate::model::user::User;
 use crate::model::user::users::table;
 use crate::model::user::users::dsl::*;
 use diesel::prelude::*;
+use crate::route::hello_route::UpdatedUserInfo;
 
 #[derive(QueryableByName, PartialEq, Debug,Serialize)]
 #[table_name = "users"]
@@ -61,6 +62,21 @@ pub async fn delete_userdata(pool: &DbPool, user_id: i64) -> Result<(), diesel::
         Ok(())
 }
 
+
+
+pub async fn update_userdata(pool: &DbPool, user_id: i64, updated_info: &UpdatedUserInfo) -> Result<(), Error> {
+    let conn = pool.get().unwrap();
+
+    let updated_rows = diesel::update(users.filter(id.eq(user_id)))
+        .set(name.eq(&updated_info.name))
+        .execute(&conn)?;
+
+    if updated_rows == 0 {
+        return Err(Error::NotFound);
+    }
+
+    Ok(())
+}
 
 
 
