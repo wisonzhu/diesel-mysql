@@ -20,6 +20,7 @@ async fn main() -> std::io::Result<()> {
             .data(pool.clone())
             .service(route::hello_route::hello)
             .service(route::hello_route::helloworld)
+            .service(route::hello_route::helloworld1)
             .service(route::hello_route::jsondemo)
     })
     .bind("127.0.0.1:8080")?

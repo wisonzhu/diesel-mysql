@@ -4,8 +4,9 @@ use diesel::RunQueryDsl;
 use diesel::sql_types::Text;
 use diesel::result::Error;
 use crate::config::database::DbPool;
+use serde::Serialize;
 
-#[derive(QueryableByName, PartialEq, Debug)]
+#[derive(QueryableByName, PartialEq, Debug,Serialize)]
 #[table_name = "users"]
 pub struct QueryResult {
     #[sql_type="Text"]
@@ -28,6 +29,18 @@ pub async fn getuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingEr
         .await;
     return getuser
 }
+
+pub async fn getuser1(pool: &web::Data<DbPool>) -> Result<Vec<QueryResult>, BlockingError<Error>>{
+    let conn = pool.get().unwrap();
+    let getuser1 = web::block(move || diesel::sql_query("select name as data from users")
+        .get_results::<QueryResult>(&conn))
+        .await;
+    for i in getuser1.iter() {
+        println!("test {:?}", i)
+    }
+    return  getuser1
+}
+
 
 // pub async fn insertuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
 //     let conn = pool.get().unwrap();
