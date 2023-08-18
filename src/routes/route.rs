@@ -1,9 +1,9 @@
 use actix_web::{get,post,delete,put,HttpResponse, Responder, web};
 use crate::config::database::DbPool;
-use crate::service::ping_service::{ping, getuser,listuser,create_userdata,delete_userdata,update_userdata};
+use crate::services::service::{ping, getuser,listuser,create_userdata,delete_userdata,update_userdata};
 use log::{error, info};
 use serde::{Serialize, Deserialize};
-use crate::model::user::User;
+use crate::models::user::User;
 
 
 #[derive(Deserialize,Serialize)]

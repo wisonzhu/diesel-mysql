@@ -5,9 +5,9 @@ use diesel::sql_types::Text;
 use diesel::result::Error;
 use crate::config::database::DbPool;
 use serde::Serialize;
-use crate::model::user::User;
-use crate::model::user::users::table;
-use crate::model::user::users::dsl::*;
+use crate::models::user::User;
+use crate::models::user::users::table;
+use crate::models::user::users::dsl::*;
 use diesel::prelude::*;
 use crate::routes::route::UpdatedUserInfo;
 

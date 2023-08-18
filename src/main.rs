@@ -6,8 +6,8 @@ use env_logger::Env;
 
 pub mod routes;
 pub mod config;
-pub mod service;
-pub mod model;
+pub mod services;
+pub mod models;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
