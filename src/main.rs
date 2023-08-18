@@ -4,7 +4,7 @@ extern crate diesel;
 use actix_web::{App, HttpServer, middleware};
 use env_logger::Env;
 
-pub mod route;
+pub mod routes;
 pub mod config;
 pub mod service;
 pub mod model;
@@ -19,13 +19,13 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(middleware::Logger::default())
             .data(pool.clone())
-            .service(route::hello_route::hello)
-            .service(route::hello_route::get_userinfo)
-            .service(route::hello_route::list_users)
-            .service(route::hello_route::create_user)
-            .service(route::hello_route::delete_user)
-            .service(route::hello_route::update_user)
-            .service(route::hello_route::jsondemo)
+            .service(routes::route::hello)
+            .service(routes::route::get_userinfo)
+            .service(routes::route::list_users)
+            .service(routes::route::create_user)
+            .service(routes::route::delete_user)
+            .service(routes::route::update_user)
+            .service(routes::route::jsondemo)
     })
     .bind("127.0.0.1:8080")?
     .run()

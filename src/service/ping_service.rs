@@ -9,7 +9,7 @@ use crate::model::user::User;
 use crate::model::user::users::table;
 use crate::model::user::users::dsl::*;
 use diesel::prelude::*;
-use crate::route::hello_route::UpdatedUserInfo;
+use crate::routes::route::UpdatedUserInfo;
 
 #[derive(QueryableByName, PartialEq, Debug,Serialize)]
 #[table_name = "users"]
@@ -35,16 +35,7 @@ pub async fn getuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingEr
     return getuser
 }
 
-pub async fn listuser(pool: &web::Data<DbPool>) -> Result<Vec<QueryResult>, BlockingError<Error>>{
-    let conn = pool.get().unwrap();
-    let getuser1 = web::block(move || diesel::sql_query("select name as data from users")
-        .get_results::<QueryResult>(&conn))
-        .await;
-    for i in getuser1.iter() {
-        println!("test {:?}", i)
-    }
-    return  getuser1
-}
+
 
 pub async fn create_userdata(pool: &DbPool, new_user: User) -> Result<(), diesel::result::Error> {
     let conn = pool.get().unwrap();
@@ -55,13 +46,13 @@ pub async fn create_userdata(pool: &DbPool, new_user: User) -> Result<(), diesel
 }
 
 
+
 pub async fn delete_userdata(pool: &DbPool, user_id: i64) -> Result<(), diesel::result::Error> {
     let conn = pool.get().unwrap();
         diesel::delete(users.filter(id.eq(user_id)))
             .execute(&conn)?;
         Ok(())
 }
-
 
 
 pub async fn update_userdata(pool: &DbPool, user_id: i64, updated_info: &UpdatedUserInfo) -> Result<(), Error> {
@@ -79,11 +70,13 @@ pub async fn update_userdata(pool: &DbPool, user_id: i64, updated_info: &Updated
 }
 
 
-
-// pub async fn insertuser(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError<Error>>{
-//     let conn = pool.get().unwrap();
-//     let insertuser = web::block(move || diesel::insert_into("select name as data from users")
-//         .get_result::<QueryResult>(&conn))
-//         .await;
-//     return insertuser
-// }
+pub async fn listuser(pool: &web::Data<DbPool>) -> Result<Vec<QueryResult>, BlockingError<Error>>{
+    let conn = pool.get().unwrap();
+    let getuser1 = web::block(move || diesel::sql_query("select name as data from users")
+        .get_results::<QueryResult>(&conn))
+        .await;
+    for i in getuser1.iter() {
+        println!("test {:?}", i)
+    }
+    return  getuser1
+}
