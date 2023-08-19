@@ -16,6 +16,10 @@ pub struct UpdatedUserInfo {
     pub name: String,
 }
 
+#[derive(Serialize)]
+struct MyResponse {
+    message: String,
+}
 
 #[get("/test")]
 pub async fn hello(pool: web::Data<DbPool>) -> impl Responder {
@@ -95,3 +99,25 @@ pub async fn jsondemo(post: web::Json<UserInfo>) -> impl Responder {
     info!("Succes in pinging database");
     HttpResponse::Ok().body(format!("Welcome {}!", post.username))
 }
+
+#[get("/jsontest")]
+pub async fn jsondata() -> impl Responder {
+    info!("Succes in pinging database");
+    let response = MyResponse {
+        message: "Hello, JSON!".to_string(),
+    };
+    HttpResponse::Ok().json(response)
+}
+
+
+#[derive(serde::Deserialize)]
+struct Info {
+    name: String,
+    age: u32,
+}
+
+#[get("/urltest")]
+pub async fn testurl(info: web::Query<Info>) -> impl Responder {
+    HttpResponse::Ok().body(format!("Hello, {}! You are {} years old.", info.name, info.age))
+}
+                         
