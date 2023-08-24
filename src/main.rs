@@ -8,6 +8,7 @@ pub mod routes;
 pub mod config;
 pub mod services;
 pub mod models;
+mod schema;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
