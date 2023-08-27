@@ -3,6 +3,7 @@ name = "actix-demo"
 version = "0.1.0"
 authors = ["Naim Aryudya <naimaryudya@gmail.com>"]
 edition = "2018"
+default-run = "actix-demo"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
