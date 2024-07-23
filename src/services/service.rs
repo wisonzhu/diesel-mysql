@@ -1,5 +1,6 @@
 use actix_web::{web};
 use actix_web::error::BlockingError;
+use actix_web::web::Query;
 use diesel::RunQueryDsl;
 use diesel::sql_types::Text;
 use diesel::result::Error;
@@ -24,6 +25,7 @@ pub async fn ping(pool: &web::Data<DbPool>) -> Result<QueryResult, BlockingError
     let ping = web::block(move || diesel::sql_query("SELECT RIGHT('foobarbar', 4) as data")
         .get_result::<QueryResult>(&conn))
         .await;
+    println!("test {:?}", ping);
         return ping
 }
 
@@ -85,15 +87,21 @@ pub async fn update_userdata(pool: &DbPool, user_id: i64, updated_info: &Updated
 
 pub async fn listuser(pool: &web::Data<DbPool>) -> Result<Vec<User>, Error> {
     let conn = pool.get().unwrap();
-    // let getuser1 = web::block(move || diesel::sql_query("select name as data from users")
-    //     .get_results::<User>(&conn))
-    //     .await;
 
     let results = table.load::<User>(&conn)?;
+    println!("test {:?}", results);
 
     for i in results.iter() {
         println!("test {:?}", i)
     }
 
+    Ok(results)
+}
+
+// filter users by name
+pub async fn filter_users(pool: &web::Data<DbPool>, user_name: String) -> Result<Vec<User>, Error> {
+    let conn = pool.get().unwrap();
+    let results = table.filter(name.eq(user_name))
+        .load::<User>(&conn)?;
     Ok(results)
 }

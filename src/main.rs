@@ -23,6 +23,7 @@ async fn main() -> std::io::Result<()> {
             .service(routes::route::hello)
             .service(routes::route::get_userinfo)
             .service(routes::route::list_users)
+            .service(routes::route::get_username)
             .service(routes::route::create_user)
             .service(routes::route::delete_user)
             .service(routes::route::update_user)
@@ -30,7 +31,7 @@ async fn main() -> std::io::Result<()> {
             .service(routes::route::jsondata)     
             .service(routes::route::testurl)
     })
-    .bind("127.0.0.1:8080")?
+    .bind("0.0.0.0:8080")?
     .run()
     .await
 }
