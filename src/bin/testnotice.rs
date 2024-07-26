@@ -1,5 +1,4 @@
 // 按以下要求生成代码
-// post方法调用http://opengalaxy.bg.huohua.cn/api/v1/kube-notice/feishu/notice接口
 // json的数据格式如下:
 //  notice_token: 通知token
 //  notice_type: 通知类型，目前只支持text
@@ -23,7 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     map.insert("notice_at", "at");
 
     let res = client
-        .post("http://opengalaxy.bg.huohua.cn/api/v1/kube-notice/feishu/notice")
+        .post("http://dev.openops.com/api/v1/kube-notice/feishu/notice")
         .json(&map)
         .send()
         .await?;
